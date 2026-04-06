@@ -1,0 +1,21 @@
+[TRAIN]
+  Accuracy  : 0.8845
+  Precision : 0.8854
+  Recall    : 0.8845
+  F1-Score  : 0.8847
+  Log-Loss  : 0.3820
+
+[VAL]
+  Accuracy  : 0.4106
+  Precision : 0.5520
+  Recall    : 0.4106
+  F1-Score  : 0.4255
+  Log-Loss  : 4.0477
+
+[TEST]
+  Accuracy  : 0.3515
+  Precision : 0.3537
+  Recall    : 0.3515
+  F1-Score  : 0.3069
+  Log-Loss  : 4.8718
+
