@@ -205,3 +205,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Dataset
+PAMAP2_Dataset/Protocol
+PAMAP2_Dataset/Optional
+PAMAP2_Dataset/*.pdf
+PAMAP2_Dataset/processed
