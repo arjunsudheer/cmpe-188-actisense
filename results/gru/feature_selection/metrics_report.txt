@@ -1,0 +1,29 @@
+Metrics Report — CNN-GRU (Dua et al.)
+==============================
+
+[TRAIN]
+  Accuracy  : 0.9976
+  Precision : 0.9976
+  Recall    : 0.9976
+  F1-Score  : 0.9976
+  Log-Loss  : 0.0075
+
+[VAL]
+  Accuracy  : 0.8733
+  Precision : 0.8850
+  Recall    : 0.8733
+  F1-Score  : 0.8713
+  Log-Loss  : 0.6499
+
+[TEST]
+  Accuracy  : 0.9541
+  Precision : 0.9562
+  Recall    : 0.9541
+  F1-Score  : 0.9541
+  Log-Loss  : 0.2746
+
+[STREAMING PREDICTION TIMING]
+  Samples streamed  : 3617
+  Avg time/sample   : 2.2103 ms
+  Total time        : 7994.50 ms
+

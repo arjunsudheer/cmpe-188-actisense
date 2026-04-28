@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
@@ -14,11 +17,16 @@ from sklearn.metrics import (
     average_precision_score,
 )
 from sklearn.preprocessing import label_binarize
+import pandas as pd
 
 
 def calculate_metrics(
     y_true: np.ndarray, y_pred: np.ndarray, y_prob: np.ndarray, split_name: str
 ) -> dict:
+    # Clip and renormalize to guard against log(0)
+    y_prob_safe = np.clip(y_prob, 1e-10, 1.0)
+    row_sums = y_prob_safe.sum(axis=1, keepdims=True)
+    y_prob_safe = y_prob_safe / row_sums
     return {
         "split": split_name,
         "accuracy": accuracy_score(y_true, y_pred),
@@ -27,7 +35,7 @@ def calculate_metrics(
         ),
         "recall": recall_score(y_true, y_pred, average="weighted", zero_division=0),
         "f1": f1_score(y_true, y_pred, average="weighted", zero_division=0),
-        "log_loss": log_loss(y_true, y_prob, labels=range(y_prob.shape[1])),
+        "log_loss": log_loss(y_true, y_prob_safe, labels=range(y_prob_safe.shape[1])),
     }
 
 
@@ -39,7 +47,6 @@ def plot_confusion_matrix(
     class_names: list,
 ):
     cm = confusion_matrix(y_true, y_pred)
-    # Ensure display_labels matches the unique classes present in y_true/y_pred
     unique_labels = np.unique(np.concatenate([y_true, y_pred]))
     display_labels = [class_names[i] for i in unique_labels]
 
@@ -80,9 +87,16 @@ def plot_pr_curves(
     plt.close()
 
 
-def save_metrics_report(metrics_list: list[dict], output_dir: Path, model_name: str):
+def save_metrics_report(
+    metrics_list: list[dict],
+    output_dir: Path,
+    model_name: str,
+    timing: dict | None = None,
+):
     report_path = output_dir / "metrics_report.txt"
     with open(report_path, "w") as f:
+        f.write(f"Metrics Report — {model_name}\n")
+        f.write("=" * 30 + "\n\n")
         for m in metrics_list:
             f.write(f"[{m['split'].upper()}]\n")
             f.write(f"  Accuracy  : {m['accuracy']:.4f}\n")
@@ -90,4 +104,18 @@ def save_metrics_report(metrics_list: list[dict], output_dir: Path, model_name: 
             f.write(f"  Recall    : {m['recall']:.4f}\n")
             f.write(f"  F1-Score  : {m['f1']:.4f}\n")
             f.write(f"  Log-Loss  : {m['log_loss']:.4f}\n\n")
+
+        if timing is not None:
+            f.write("[STREAMING PREDICTION TIMING]\n")
+            f.write(f"  Samples streamed  : {timing['n_samples']}\n")
+            f.write(f"  Avg time/sample   : {timing['avg_ms']:.4f} ms\n")
+            f.write(f"  Total time        : {timing['total_ms']:.2f} ms\n\n")
+
     print(f" Saved report to {report_path}")
+
+
+def save_training_history(history: list[dict], output_dir: Path):
+    history_path = output_dir / "training_history.csv"
+    df = pd.DataFrame(history)
+    df.to_csv(history_path, index=False)
+    print(f" Saved training history to {history_path}")

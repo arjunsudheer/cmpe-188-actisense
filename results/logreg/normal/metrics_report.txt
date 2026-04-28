@@ -1,21 +1,29 @@
+Metrics Report — Logistic Regression (PyTorch)
+==============================
+
 [TRAIN]
-  Accuracy  : 0.8845
-  Precision : 0.8854
-  Recall    : 0.8845
-  F1-Score  : 0.8847
-  Log-Loss  : 0.3820
+  Accuracy  : 0.9733
+  Precision : 0.9738
+  Recall    : 0.9733
+  F1-Score  : 0.9734
+  Log-Loss  : 0.0985
 
 [VAL]
-  Accuracy  : 0.4106
-  Precision : 0.5520
-  Recall    : 0.4106
-  F1-Score  : 0.4255
-  Log-Loss  : 4.0477
+  Accuracy  : 0.8975
+  Precision : 0.8988
+  Recall    : 0.8975
+  F1-Score  : 0.8977
+  Log-Loss  : 0.3907
 
 [TEST]
-  Accuracy  : 0.3515
-  Precision : 0.3537
-  Recall    : 0.3515
-  F1-Score  : 0.3069
-  Log-Loss  : 4.8718
+  Accuracy  : 0.9403
+  Precision : 0.9442
+  Recall    : 0.9403
+  F1-Score  : 0.9404
+  Log-Loss  : 0.2830
+
+[STREAMING PREDICTION TIMING]
+  Samples streamed  : 3617
+  Avg time/sample   : 0.0891 ms
+  Total time        : 322.18 ms
 

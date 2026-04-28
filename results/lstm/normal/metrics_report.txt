@@ -1,0 +1,29 @@
+Metrics Report — CNN-BiLSTM (Challa et al.)
+==============================
+
+[TRAIN]
+  Accuracy  : 0.9951
+  Precision : 0.9951
+  Recall    : 0.9951
+  F1-Score  : 0.9951
+  Log-Loss  : 0.0180
+
+[VAL]
+  Accuracy  : 0.8802
+  Precision : 0.8855
+  Recall    : 0.8802
+  F1-Score  : 0.8784
+  Log-Loss  : 0.5683
+
+[TEST]
+  Accuracy  : 0.8319
+  Precision : 0.8628
+  Recall    : 0.8319
+  F1-Score  : 0.8305
+  Log-Loss  : 0.6397
+
+[STREAMING PREDICTION TIMING]
+  Samples streamed  : 3617
+  Avg time/sample   : 1.4376 ms
+  Total time        : 5199.87 ms
+

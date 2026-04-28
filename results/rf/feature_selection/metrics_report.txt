@@ -1,21 +1,22 @@
-[TRAIN]
-  Accuracy  : 1.0000
-  Precision : 1.0000
-  Recall    : 1.0000
-  F1-Score  : 1.0000
-  Log-Loss  : 0.0022
+Metrics Report — Random Forest
+==============================
 
-[VAL]
-  Accuracy  : 1.0000
-  Precision : 1.0000
-  Recall    : 1.0000
-  F1-Score  : 1.0000
-  Log-Loss  : 0.0026
+[TRAIN]
+  Accuracy  : 0.9947
+  Precision : 0.9948
+  Recall    : 0.9947
+  F1-Score  : 0.9947
+  Log-Loss  : 0.1124
 
 [TEST]
-  Accuracy  : 0.4109
-  Precision : 0.4170
-  Recall    : 0.4109
-  F1-Score  : 0.3910
-  Log-Loss  : 2.0672
+  Accuracy  : 0.8842
+  Precision : 0.9167
+  Recall    : 0.8842
+  F1-Score  : 0.8901
+  Log-Loss  : 0.5413
+
+[STREAMING PREDICTION TIMING]
+  Samples streamed  : 3617
+  Avg time/sample   : 57.6418 ms
+  Total time        : 208490.52 ms
 
