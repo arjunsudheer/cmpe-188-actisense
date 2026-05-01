@@ -10,7 +10,7 @@ This repository is dedicated to the ActiSense final project for CMPE 188 at San 
 
 Human Activity Recognition (HAR) is a critical task in ubiquitous computing, enabling applications in healthcare, sports monitoring, and elderly care. This project, **ActiSense**, leverages the PAMAP2 Physical Activity Monitoring dataset to build a robust system capable of classifying various physical activities using multi-modal sensor data.
 
-In my final demo, I will compare the performance of Logistic Regression, Random Forest, Long-Short Term Memory (LSTM), and Gradient Recurrent Unit (GRU) on the PAMAP2 dataset. This allows me to compare the performance of traditional machine learning with deep learning on time-series data. I will compare the four models in terms of accuracy, precision, recall, and F1-score, and I will also include a confusion matrix. I will conduct exploratory data analysis by understanding the relationships between the features and the similarity between them using techniques like Principal Component Analysis (PCA). I will also explore feature selection and compare model accuracy when performing feature selection versus training on all the data. I will discuss the techniques I used for feature selection and how they affected the performance of all four models. For the real-time evaluation requirement, I will simulate streaming sensor data by feeding samples one window at a time to measure prediction performance and inference latency. The goal of this project is to build an activity detection model that can classify real human physical activity from wearable sensor data, which enables health monitoring and fitness tracking capabilities.
+In my final demo, I compare the performance of Logistic Regression, Random Forest, CNN-BiLSTM (Challa et al.), and CNN-GRU (Dua et al.) on the PAMAP2 dataset. This allows me to compare the performance of traditional machine learning with deep learning on time-series data. I compare the four models in terms of accuracy, precision, recall, and F1-score, and I also include a confusion matrix. I conducted exploratory data analysis by understanding the relationships between the features and the similarity between them using techniques like Principal Component Analysis (PCA). I also explored feature selection and compared model accuracy when performing feature selection versus training on all the data. I discussed the techniques I used for feature selection and how they affected the performance of all four models. For the real-time evaluation requirement, I simulated streaming sensor data by feeding samples one window at a time to measure prediction performance and inference latency. The goal of this project is to build an activity detection model that can classify real human physical activity from wearable sensor data, which enables health monitoring and fitness tracking capabilities.
 
 ## Dataset
 
@@ -75,25 +75,27 @@ I generate the following plots to understand the data before modeling:
 
 ### 4. Model Training and Evaluation
 
-The following four models will be compared against each other. I compare Random Forest and Logistic Regression models against LSTM and GRU to compare traditional classifier models veruses time-series based classification:
+The following four models will be compared against each other. I compare Random Forest and Logistic Regression models against CNN-BiLSTM and CNN-GRU to compare traditional classifier models versus time-series based deep learning:
 
 -   **Random Forest:** A robust ensemble-based baseline.
 -   **Logistic Regression (PyTorch):** Optimized with weighted CrossEntropyLoss to handle imbalanced activity classes.
--   **LSTM / GRU:** Deep learning models tailored for sequential time-series data.
+-   **CNN-BiLSTM / CNN-GRU:** Advanced hybrid architectures that combine Convolutional layers for spatial feature extraction with Recurrent layers for temporal dependencies.
 
 Performance is evaluated using Accuracy, Precision, Recall, and F1-Score, with confusion matrices and Precision-Recall curves generated for each experiment.
 
 ## Current Implementation Progress
 
-Currently, I have the dataset preprocessing, EDA plots, Random Forest Classifier, and Logistic Regression model implemented. I have made these work with both the normal and manual feature selection datasets. I have also selected some features to manually drop based on the EDA plots for further analysis.
+Currently, the project is mostly complete. I have implemented the full preprocessing pipeline, conducted thorough EDA, and trained all four models. The system supports both the full dataset and a manual feature selection configuration (excluding gyroscope data). I have also implemented a real-time simulation to measure inference latency for each model. My next step is to extract the Random Forest Classifier feature importance score to justify the manual feature selection.
 
-### Preliminary Results
+### Final Results
 
-The current models have been evaluated on the held-out subject (108). Initial F1-scores are summarized below:
+The models were evaluated on a held-out subject (108). The results demonstrate that the CNN-GRU hybrid model achieves the highest F1-score, while Logistic Regression provides the lowest inference latency.
 
-| Model | Normal Dataset | Feature Selection (No Gyro) |
-| :--- | :---: | :---: |
-| **Random Forest** | 0.4148 | 0.3910 |
-| **Logistic Regression** | 0.3069 | 0.3114 |
+| Model | Dataset Config | Test F1 | Latency (ms) |
+| :--- | :--- | :---: | :---: |
+| **CNN-GRU (Dua et al.)** | Feature Selection | 0.9424 | 2.64 |
+| **Logistic Regression** | Normal | 0.9321 | 0.12 |
+| **Random Forest** | Normal | 0.9290 | 54.27 |
+| **CNN-BiLSTM (Challa et al.)** | Feature Selection | 0.9224 | 1.62 |
 
-My next steps include implementing the LSTM and GRU models, and implementing data streaming for live analysis.
+The project successfully achieved its goal of classifying physical activities with high accuracy while maintaining low enough latency for real-time applications.

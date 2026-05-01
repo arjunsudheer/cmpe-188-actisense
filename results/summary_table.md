@@ -2,11 +2,11 @@
 
 | Model                         | Config            |   TRAIN Acc |   VAL Acc |   TEST Acc |   TEST F1 |   Latency (ms) |
 |:------------------------------|:------------------|------------:|----------:|-----------:|----------:|---------------:|
-| CNN-GRU (Dua et al.)          | feature_selection |      0.9976 |    0.8733 |     0.9541 |    0.9541 |         2.2103 |
-| CNN-GRU (Dua et al.)          | normal            |      0.9976 |    0.8861 |     0.9428 |    0.9431 |         2.1099 |
-| Logistic Regression (PyTorch) | normal            |      0.9733 |    0.8975 |     0.9403 |    0.9404 |         0.0891 |
-| Random Forest                 | normal            |      0.9939 |  nan      |     0.9276 |    0.929  |        53.7609 |
-| Logistic Regression (PyTorch) | feature_selection |      0.952  |    0.8882 |     0.9267 |    0.9268 |         0.162  |
-| Random Forest                 | feature_selection |      0.9947 |  nan      |     0.8842 |    0.8901 |        57.6418 |
-| CNN-BiLSTM (Challa et al.)    | feature_selection |      0.9967 |    0.8684 |     0.8366 |    0.8368 |         1.6495 |
-| CNN-BiLSTM (Challa et al.)    | normal            |      0.9951 |    0.8802 |     0.8319 |    0.8305 |         1.4376 |
+| CNN-GRU (Dua et al.)          | feature_selection |      0.9979 |    0.8774 |     0.9422 |    0.9424 |         2.6416 |
+| Logistic Regression (PyTorch) | normal            |      0.9636 |    0.8946 |     0.9323 |    0.9321 |         0.1182 |
+| Random Forest                 | normal            |      0.9939 |  nan      |     0.9276 |    0.929  |        54.2744 |
+| Logistic Regression (PyTorch) | feature_selection |      0.9439 |    0.8862 |     0.9251 |    0.925  |         0.1434 |
+| CNN-BiLSTM (Challa et al.)    | feature_selection |      0.9957 |    0.8773 |     0.9207 |    0.9224 |         1.6193 |
+| CNN-GRU (Dua et al.)          | normal            |      0.9993 |    0.8891 |     0.9168 |    0.9203 |         2.139  |
+| CNN-BiLSTM (Challa et al.)    | normal            |      0.9886 |    0.8574 |     0.8925 |    0.8944 |         1.8062 |
+| Random Forest                 | feature_selection |      0.9947 |  nan      |     0.8842 |    0.8901 |        54.2582 |
