@@ -17,6 +17,6 @@ Metrics Report — Random Forest
 
 [STREAMING PREDICTION TIMING]
   Samples streamed  : 3617
-  Avg time/sample   : 54.2744 ms
-  Total time        : 196310.41 ms
+  Avg time/sample   : 52.1832 ms
+  Total time        : 188746.68 ms
 
