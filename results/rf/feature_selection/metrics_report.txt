@@ -2,21 +2,21 @@ Metrics Report — Random Forest
 ==============================
 
 [TRAIN]
-  Accuracy  : 0.9947
-  Precision : 0.9948
-  Recall    : 0.9947
-  F1-Score  : 0.9947
-  Log-Loss  : 0.1124
+  Accuracy  : 0.9930
+  Precision : 0.9930
+  Recall    : 0.9930
+  F1-Score  : 0.9930
+  Log-Loss  : 0.1148
 
 [TEST]
-  Accuracy  : 0.8842
-  Precision : 0.9167
-  Recall    : 0.8842
-  F1-Score  : 0.8901
-  Log-Loss  : 0.5413
+  Accuracy  : 0.8977
+  Precision : 0.9236
+  Recall    : 0.8977
+  F1-Score  : 0.9025
+  Log-Loss  : 0.4968
 
 [STREAMING PREDICTION TIMING]
   Samples streamed  : 3617
-  Avg time/sample   : 54.2582 ms
-  Total time        : 196251.85 ms
+  Avg time/sample   : 52.7086 ms
+  Total time        : 190646.84 ms
 

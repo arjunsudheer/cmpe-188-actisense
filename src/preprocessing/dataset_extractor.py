@@ -45,15 +45,9 @@ IMU_COMPONENTS = [
 ]
 
 MANUAL_FEATURES_TO_DROP = [
-    "hand_gyro_x",
-    "hand_gyro_y",
-    "hand_gyro_z",
-    "chest_gyro_x",
-    "chest_gyro_y",
-    "chest_gyro_z",
-    "ankle_gyro_x",
-    "ankle_gyro_y",
-    "ankle_gyro_z",
+    "chest_mag_x",  # High correlation with chest_mag_y
+    "chest_mag_z",  # High correlation with chest_acc16_z
+    "ankle_mag_y",  # Overlaps with chest_mag_z (negative correlation)
 ]
 
 

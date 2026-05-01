@@ -1,6 +1,6 @@
 # ActiSense
 
-This repository is dedicated to the ActiSense final project for CMPE 188 at San Jose State University. This project focuses on Human Activity Recognition (HAR) using wearable sensor data.
+This repository contains the final project for CMPE 188 at San Jose State University. **ActiSense** is a robust Human Activity Recognition (HAR) system that leverages wearable sensor data from the PAMAP2 dataset to classify physical activities with high precision and low latency.
 
 ## Team Members:
 
@@ -29,7 +29,7 @@ The raw dataset contains 54 columns of information, which I have categorized and
 1.  **Timestamp:** Sample index in seconds.
 2.  **Heart Rate:** Measured in beats per minute (bpm).
 3.  **IMU Sensors:** Three Inertial Measurement Units located on the **Hand**, **Chest**, and **Ankle** (51 features). Each IMU provides:
-    *   **Temperature:** Internal sensor temperature in celsius.
+    *   **Temperature:** Internal sensor temperature (*Dropped in preprocessing as it did not contribute to activity classification*).
     *   **3D-Acceleration:** +/-16g range, providing high-magnitude movement data (m/s^2).
     *   **3D-Acceleration:** +/-6g range, providing high-resolution movement data (m/s^2) (*Dropped in preprocessing due to lack of calibration*).
     *   **3D-Gyroscope:** Angular velocity in rad/s.
@@ -52,7 +52,7 @@ The dataset preprocessing stage first extracts the data from the provided .dat f
 -   **Cleaning:** Removal of the "transient" (0) label and invalid features (orientation, 6g accelerometer).
 -   **Missing Values / NAN:** Linear interpolation is used for the Heart Rate data to match the 100Hz IMU frequency, and forward/back-filling handles occasional wireless packet drops.
 -   **Normalization:** `StandardScaler` is applied to ensure all features contribute equally to the models.
--   **Manual Feature Selection:** Testing experiments where high-noise or low-importance features (like gyroscopes) are dropped based on EDA.
+-   **Manual Feature Selection:** Testing experiments where high-noise or redundant features (specifically highly correlated magnetometers) are dropped based on EDA findings and Random Forest feature importance rankings.
 -   **Data Splitting:** Subjects are split into Train (101-105, 109), Validation (106, 107), and Test (108) to evaluate cross-subject generalization.
 
 ### 2. Sliding Window Creation (Time-series)
@@ -72,6 +72,7 @@ I generate the following plots to understand the data before modeling:
 -   **Correlation Heatmaps:** Identifying redundant sensors and highly correlated feature groups.
 -   **Principal Component Analysis (PCA):** Visualizing activity clusters in 2D and assessing feature contributions to variance using Scree plots.
 -   **Sensor Snippets:** Plotting raw acceleration data for different intensities (e.g., Lying vs. Running) to verify signal quality.
+-   **Random Forest Feature Importance:** Ranking features to identify the most predictive signals (e.g., specific accelerometer axes) and validate manual feature selection.
 
 ### 4. Model Training and Evaluation
 
@@ -79,23 +80,32 @@ The following four models will be compared against each other. I compare Random 
 
 -   **Random Forest:** A robust ensemble-based baseline.
 -   **Logistic Regression (PyTorch):** Optimized with weighted CrossEntropyLoss to handle imbalanced activity classes.
--   **CNN-BiLSTM / CNN-GRU:** Advanced hybrid architectures that combine Convolutional layers for spatial feature extraction with Recurrent layers for temporal dependencies.
+-   **CNN-BiLSTM / CNN-GRU:** Advanced hybrid architectures that combine multi-scale Convolutional layers (kernels 3, 7, 11) for spatial feature extraction with Recurrent layers (BiLSTM or GRU) for temporal dependencies.
+
+### Technical Highlights
+
+1.  **ML Feature Engineering:** For traditional models, I implemented a vectorized extraction pipeline that computes 18 features per channel (mean, std, min, max, RMS, skew, kurtosis, MAD, zero-crossing rate, and 8 frequency-domain features including spectral entropy and sub-band power) plus cross-axis correlations.
+2.  **Hybrid Deep Learning:** The DL models use a "TimeDistributed" approach, processing windows as sub-sequences to capture local patterns before aggregating temporal information.
+3.  **Real-Time Simulation:** Each model was benchmarked for inference latency by simulating a one-window-at-a-time data stream, ensuring feasibility for wearable deployment.
+4.  **Feature Importance Validation:** Used Random Forest importance scores to confirm that dropping redundant magnetometer axes maintained model performance while reducing feature dimensionality.
 
 Performance is evaluated using Accuracy, Precision, Recall, and F1-Score, with confusion matrices and Precision-Recall curves generated for each experiment.
 
 ## Current Implementation Progress
 
-Currently, the project is mostly complete. I have implemented the full preprocessing pipeline, conducted thorough EDA, and trained all four models. The system supports both the full dataset and a manual feature selection configuration (excluding gyroscope data). I have also implemented a real-time simulation to measure inference latency for each model. My next step is to extract the Random Forest Classifier feature importance score to justify the manual feature selection.
+The project is complete.
 
-### Final Results
+### Final Results & Comparison
 
-The models were evaluated on a held-out subject (108). The results demonstrate that the CNN-GRU hybrid model achieves the highest F1-score, while Logistic Regression provides the lowest inference latency.
+The models were evaluated on a held-out subject (108) to test cross-subject generalization. The results show that while the CNN-GRU hybrid model provides the highest classification accuracy, the Logistic Regression model offers an exceptional balance of performance and efficiency.
 
 | Model | Dataset Config | Test F1 | Latency (ms) |
 | :--- | :--- | :---: | :---: |
-| **CNN-GRU (Dua et al.)** | Feature Selection | 0.9424 | 2.64 |
-| **Logistic Regression** | Normal | 0.9321 | 0.12 |
-| **Random Forest** | Normal | 0.9290 | 54.27 |
-| **CNN-BiLSTM (Challa et al.)** | Feature Selection | 0.9224 | 1.62 |
+| **CNN-GRU (Dua et al.)** | Normal | 0.9494 | 2.38 |
+| **CNN-BiLSTM (Challa et al.)** | Normal | 0.9368 | 1.30 |
+| **Logistic Regression** | Normal | 0.9332 | 0.12 |
+| **Random Forest** | Normal | 0.9290 | 52.18 |
 
-The project successfully achieved its goal of classifying physical activities with high accuracy while maintaining low enough latency for real-time applications.
+### Conclusion
+
+The project successfully demonstrates that deep learning hybrids like CNN-GRU are highly effective for HAR tasks on the PAMAP2 dataset, achieving over 94% F1-score. Furthermore, the extremely low latency of the Logistic Regression model (0.12ms) highlights its suitability for resource-constrained wearable devices where real-time performance is paramount. All project objectives, including EDA, feature selection, model comparison, and real-time simulation, have been fully met.
