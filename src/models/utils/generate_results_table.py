@@ -70,7 +70,7 @@ def generate_results_table():
         df = df.sort_values("TEST Acc", ascending=False)
 
     table_md = "# PAMAP2 Model Comparison Table\n\n" + df.to_markdown(index=False)
-    
+
     # Save to file
     table_path = results_base / "summary_table.md"
     table_path.write_text(table_md)

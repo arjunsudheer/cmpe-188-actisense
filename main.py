@@ -5,17 +5,12 @@ from src.models.utils.generate_results_table import generate_results_table
 
 
 def run_pipeline():
-    # Preprocess datasets
-    processed_base = Path("PAMAP2_Dataset/processed")
-    results_base = Path("results")
-
-    dataset_extractor.run_pipeline_step(None, "normal")
-
-    dataset_extractor.run_pipeline_step(
-        dataset_extractor.MANUAL_FEATURES_TO_DROP, "feature_selection"
-    )
+    # Preprocess datasets with smart caching
+    dataset_extractor.run_preprocessing_pipeline()
 
     # Train models and evaluate
+    processed_base = Path("PAMAP2_Dataset/processed")
+    results_base = Path("results")
     for subdir in ["normal", "feature_selection"]:
         data_dir = processed_base / subdir
         print(f"\nTraining on {subdir} data")

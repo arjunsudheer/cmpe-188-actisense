@@ -215,11 +215,20 @@ class PyTorchGRU:
             {"avg_ms": total_ms / n, "total_ms": total_ms, "n_samples": n},
         )
 
+    def save_weights(self, path: Path):
+        """Save model weights to disk."""
+        torch.save(self.model.state_dict(), path)
+
+    def load_weights(self, path: Path):
+        """Load model weights from disk."""
+        self.model.load_state_dict(torch.load(path, map_location=self.device))
+
 
 def run_gru(data_dir: Path, output_dir: Path):
     """Fixed-split training for GRU using windowed data."""
     output_dir.mkdir(parents=True, exist_ok=True)
     class_names = [ACTIVITY_MAP[IDX_TO_ACTIVITY[i]] for i in range(len(ACTIVITY_MAP))]
+    weights_path = output_dir / "model_weights.pt"
 
     print(f" Loading windowed data from {data_dir} ")
     train_loader, val_loader, test_loader = get_dataloaders(
@@ -236,9 +245,18 @@ def run_gru(data_dir: Path, output_dir: Path):
 
     clf = PyTorchGRU(n_channels, num_classes, weights=weights_tensor)
 
-    print(" Training PyTorch Multibranch CNN-GRU ")
-    history = clf.fit(train_loader, val_loader=val_loader, patience=15)
-    save_training_history(history, output_dir)
+    # Check if model weights already exist
+    if weights_path.exists():
+        print("Loading existing GRU weights...")
+        clf.load_weights(weights_path)
+    else:
+        print(" Training PyTorch Multibranch CNN-GRU ")
+        history = clf.fit(train_loader, val_loader=val_loader, patience=15)
+        save_training_history(history, output_dir)
+
+        # Save model weights
+        print(f"Saving model weights to {weights_path}")
+        clf.save_weights(weights_path)
 
     all_metrics = []
     for name, loader in [
