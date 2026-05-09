@@ -20,8 +20,6 @@ from src.preprocessing.constants import (
 from src.eda.exploratory_analysis import run_eda
 from scipy.stats import skew, kurtosis
 from scipy.fft import rfft, rfftfreq
-from scipy.stats import entropy as sp_entropy
-from sklearn.feature_selection import VarianceThreshold
 import joblib
 
 IMU_COMPONENTS = [
@@ -45,15 +43,9 @@ IMU_COMPONENTS = [
 ]
 
 MANUAL_FEATURES_TO_DROP = [
-    "hand_gyro_x",
-    "hand_gyro_y",
-    "hand_gyro_z",
-    "chest_gyro_x",
-    "chest_gyro_y",
-    "chest_gyro_z",
-    "ankle_gyro_x",
-    "ankle_gyro_y",
-    "ankle_gyro_z",
+    "chest_mag_x",  # High correlation with chest_mag_y
+    "chest_mag_z",  # High correlation with chest_acc16_z
+    "ankle_mag_y",  # Overlaps with chest_mag_z (negative correlation)
 ]
 
 
@@ -329,10 +321,44 @@ def run_pipeline_step(drop_features: list = None, output_subdir: str = "normal")
     return df
 
 
+def _dataset_exists(subdir: str) -> bool:
+    """Check if preprocessed dataset already exists."""
+    processed_base = Path("PAMAP2_Dataset/processed") / subdir
+    required_files = [
+        "train_ml_X.npy",
+        "train_y.npy",
+        "val_ml_X.npy",
+        "val_y.npy",
+        "test_ml_X.npy",
+        "test_y.npy",
+        "train_windows_X.npy",
+        "val_windows_X.npy",
+        "test_windows_X.npy",
+    ]
+    return all((processed_base / f).exists() for f in required_files)
+
+
+def run_preprocessing_pipeline():
+    """Run the full preprocessing pipeline with smart caching.
+
+    Checks if datasets already exist before processing. Only runs preprocessing
+    for datasets that are not found in PAMAP2_Dataset/processed/.
+    """
+    # Process normal dataset
+    if not _dataset_exists("normal"):
+        print("Processing normal dataset...")
+        run_pipeline_step(None, "normal")
+    else:
+        print("Normal dataset already exists, skipping preprocessing...")
+
+    # Process feature_selection dataset
+    if not _dataset_exists("feature_selection"):
+        print("Processing feature_selection dataset...")
+        run_pipeline_step(MANUAL_FEATURES_TO_DROP, "feature_selection")
+    else:
+        print("Feature selection dataset already exists, skipping preprocessing...")
+
+
 if __name__ == "__main__":
     # Run the pipeline for both 'normal' and 'feature_selection' (manual drops)
-    # The 'normal' run now has temperature channels dropped by default in get_cleaned_data
-    run_pipeline_step(output_subdir="normal")
-    run_pipeline_step(
-        drop_features=MANUAL_FEATURES_TO_DROP, output_subdir="feature_selection"
-    )
+    run_preprocessing_pipeline()
