@@ -4,6 +4,7 @@
 - **Team Members:** Arjun Sudheer
 - **Contact Information:** [arjun.sudheer@sjsu.edu](mailto:arjun.sudheer@sjsu.edu)
 - **GitHub Link:** [https://github.com/arjunsudheer/cmpe-188-actisense](https://github.com/arjunsudheer/cmpe-188-actisense)
+- **Project Demo Video Recording:** [https://drive.google.com/file/d/1NnL_hH68vFHrMumZo1X2OJpFAzEoTPhz/view?usp=sharing](https://drive.google.com/file/d/1NnL_hH68vFHrMumZo1X2OJpFAzEoTPhz/view?usp=sharing)
 
 This repository contains the final project for CMPE 188 at San Jose State University. **ActiSense** is a robust Human Activity Recognition (HAR) system that leverages wearable sensor data from the PAMAP2 dataset to classify physical activities with high precision and low latency.
 
@@ -204,9 +205,9 @@ The models were evaluated on a held-out subject (107) to test cross-subject gene
 ### Key Findings
 
 - **Best Overall Performance:** Logistic Regression achieves the highest accuracy (93.7%) on the full feature set with exceptional inference speed (0.14ms), making it ideal for resource-constrained wearable devices.
-- **Feature Selection Trade-offs:** Removing redundant magnetometer features surprisingly improves CNN-GRU performance (88.8% → 93.6%) while slightly degrading Random Forest and CNN-BiLSTM (1-2% drop), indicating that feature reduction can benefit certain architectures more than others.
+- **Feature Selection Trade-offs:** Removing redundant magnetometer features surprisingly improves CNN-GRU performance (88.8% --> 93.6%) while slightly degrading Random Forest and CNN-BiLSTM (1-2% drop), indicating that feature reduction can benefit certain architectures more than others.
 - **Deep Learning vs. Traditional ML:** Deep learning models (CNN-GRU, CNN-BiLSTM) exhibit higher sensitivity to feature selection, suggesting they benefit from the noise reduction despite losing some information, while Logistic Regression remains robust across both datasets. This is supported by the sensor correlation plot that shows the magnetometers and accelerometer having high correlation. More complex deep learning models that are more prone to overfitting may benefit from feature selection.
-- **Real-Time Feasibility:** All models except Random Forest demonstrate sub-5ms latency, with Logistic Regression's 0.14ms making it suitable for real-time wearable applications even on battery-constrained devices.
+- **Real-Time Feasibility:** All models except Random Forest demonstrate sub-5ms latency, with Logistic Regression's 0.14ms making it suitable for real-time wearable applications even on battery-constrained devices. This however might be due to the fact that the Random Forest classifier is the only model running entirely on the CPU, whereas the other three models can leverage GPU acceleration.
 
 ## Limitations
 
